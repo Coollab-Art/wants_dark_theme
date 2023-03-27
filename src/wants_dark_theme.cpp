@@ -81,9 +81,11 @@ auto wants_dark_theme() -> std::optional<bool>
 #endif // __linux__
 
 #ifdef __APPLE__
+#include <array>
 #include <cstdlib>
 #include <iostream>
 #include <string>
+
 namespace Cool {
 
 static auto exec(const char* cmd) -> std::string
