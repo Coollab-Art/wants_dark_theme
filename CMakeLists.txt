@@ -23,7 +23,7 @@ else()
 endif()
 
 if(APPLE)
-    target_compile_options(wants_dark_theme PUBLIC -framework CoreFoundation)
+    target_link_libraries(wants_dark_theme PUBLIC -framework CoreFoundation)
 endif()
 
 # ---Maybe enable warnings as errors---
