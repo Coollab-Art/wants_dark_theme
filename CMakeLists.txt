@@ -22,6 +22,10 @@ else()
     target_compile_options(wants_dark_theme PRIVATE -Wall -Wextra -Wpedantic -pedantic-errors -Wconversion -Wsign-conversion)
 endif()
 
+if(APPLE)
+    target_compile_options(wants_dark_theme PUBLIC -framework CoreFoundation)
+endif()
+
 # ---Maybe enable warnings as errors---
 if(WARNINGS_AS_ERRORS_FOR_WANTS_DARK_THEME)
     if(MSVC)
