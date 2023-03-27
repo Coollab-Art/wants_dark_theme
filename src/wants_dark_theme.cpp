@@ -81,10 +81,9 @@ auto wants_dark_theme() -> std::optional<bool>
 #endif // __linux__
 
 #ifdef __APPLE__
-#include <stdio.h>
 #include <array>
 #include <cstdlib>
-#include <iostream>
+#include <memory>
 #include <string>
 
 namespace Cool {
