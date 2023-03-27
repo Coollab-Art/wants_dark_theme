@@ -12,6 +12,7 @@ if(WARNINGS_AS_ERRORS_FOR_WANTS_DARK_THEME)
 else()
     target_include_directories(wants_dark_theme SYSTEM PUBLIC include)
 endif()
+
 file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS src/*.cpp)
 target_sources(wants_dark_theme PRIVATE ${SRC_FILES})
 
@@ -20,10 +21,6 @@ if(MSVC)
     target_compile_options(wants_dark_theme PRIVATE /W4)
 else()
     target_compile_options(wants_dark_theme PRIVATE -Wall -Wextra -Wpedantic -pedantic-errors -Wconversion -Wsign-conversion)
-endif()
-
-if(APPLE)
-    target_link_libraries(wants_dark_theme PUBLIC -framework CoreFoundation)
 endif()
 
 # ---Maybe enable warnings as errors---

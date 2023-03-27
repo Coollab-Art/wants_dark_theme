@@ -81,24 +81,29 @@ auto wants_dark_theme() -> std::optional<bool>
 #endif // __linux__
 
 #ifdef __APPLE__
-#include <CoreFoundation/CoreFoundation.h>
+#include <cstdlib>
+#include <iostream>
+#include <string>
 namespace Cool {
+
+static auto exec(const char* cmd) -> std::string
+{
+    std::array<char, 128> buffer;
+    std::string           result;
+    std::shared_ptr<FILE> pipe(popen(cmd, "r"), pclose);
+    if (!pipe)
+    {
+        return "";
+    }
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr)
+    {
+        result += buffer.data();
+    }
+    return result;
+}
 auto wants_dark_theme() -> std::optional<bool>
 {
-    // Get the "AppleInterfaceStyle" key from the user preferences
-    CFStringRef pref = CFSTR("AppleInterfaceStyle");
-    CFPreferencesAppSynchronize(CFSTR("com.apple.systempreferences"));
-    CFPropertyListRef value = CFPreferencesCopyValue(pref, CFSTR("com.apple.systempreferences"), kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-
-    // Check if the value exists and is "Dark"
-    if (value == nullptr)
-        return std::nullopt;
-
-    CFStringRef dark_mode_str = CFSTR("Dark");
-    const bool  dark_mode     = CFStringCompare((CFStringRef)value, dark_mode_str, kCFCompareCaseInsensitive) == kCFCompareEqualTo;
-    CFRelease(value);
-
-    return dark_mode;
+    return exec("/usr/bin/defaults read -g AppleInterfaceStyle") == "Dark\n";
 }
 } // namespace Cool
 #endif // __APPLE__
