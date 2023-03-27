@@ -1,18 +1,13 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include <doctest/doctest.h>
+#include <iostream>
 #include <wants_dark_theme/wants_dark_theme.hpp>
 
-// Check out doctest's documentation: https://github.com/doctest/doctest/blob/master/doc/markdown/tutorial.md
-
-int factorial(int number)
+auto main() -> int
 {
-    return number <= 1 ? number : factorial(number - 1) * number;
-}
-
-TEST_CASE("testing the factorial function")
-{
-    CHECK(factorial(1) == 1);
-    CHECK(factorial(2) == 2);
-    CHECK(factorial(3) == 6);
-    CHECK(factorial(10) == 3628800);
+    auto const wants_dark_theme = Cool::wants_dark_theme();
+    if (!wants_dark_theme.has_value())
+        std::cout << "Failed to read preferences.\n";
+    else if (*wants_dark_theme)
+        std::cout << "Wants DARK theme.\n";
+    else
+        std::cout << "Wants LIGHT theme.\n";
 }
