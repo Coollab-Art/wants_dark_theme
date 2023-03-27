@@ -92,7 +92,7 @@ static auto exec(const char* cmd) -> std::string
 {
     std::array<char, 128> buffer;
     std::string           result;
-    std::unique_ptr<FILE> pipe{popen(cmd, "r"), pclose};
+    std::shared_ptr<FILE> pipe{popen(cmd, "r"), pclose};
     if (!pipe)
     {
         return "";
