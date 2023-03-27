@@ -22,3 +22,24 @@ auto wants_dark_theme() -> std::optional<bool>
 }
 } // namespace Cool
 #endif // _WIN32
+
+#ifdef __APPLE__
+#include <CoreFoundation/CoreFoundation.h>
+auto wants_dark_theme() -> std::optional<bool>
+{
+    // Get the "AppleInterfaceStyle" key from the user preferences
+    CFStringRef pref = CFSTR("AppleInterfaceStyle");
+    CFPreferencesAppSynchronize(CFSTR("com.apple.systempreferences"));
+    CFPropertyListRef value = CFPreferencesCopyValue(pref, CFSTR("com.apple.systempreferences"), kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+
+    // Check if the value exists and is "Dark"
+    if (value == nullptr)
+        return std::nullopt;
+
+    CFStringRef dark_mode_str = CFSTR("Dark");
+    const bool  dark_mode     = CFStringCompare((CFStringRef)value, dark_mode_str, kCFCompareCaseInsensitive) == kCFCompareEqualTo;
+    CFRelease(value);
+
+    return dark_mode;
+}
+#endif // __APPLE__
